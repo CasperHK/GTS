@@ -1,0 +1,39 @@
+package components
+
+import (
+	"fmt"
+	"github.com/CasperHK/GTS/internal/state"
+)
+
+// Feed renders the real-time message feed fragment.
+// Items are listed newest-first. This component is broadcast via SSE whenever
+// a new message is added to the feed.
+templ Feed(items []state.FeedItem) {
+	<div id="feed" class="card">
+		<h2 class="card-title">Real-time Feed</h2>
+		<div class="feed-form">
+			<input
+				class="input"
+				type="text"
+				placeholder="Type a message…"
+				data-bind="message"
+			/>
+			<button
+				class="btn btn-accent"
+				data-on:click="@post('/feed/add')"
+			>Send</button>
+		</div>
+		if len(items) == 0 {
+			<p class="hint">No messages yet. Be the first to send one!</p>
+		} else {
+			<ul class="feed-list">
+				for i := len(items) - 1; i >= 0; i-- {
+					<li class="feed-item">
+						<span class="feed-msg">{ items[i].Message }</span>
+						<span class="feed-time">{ fmt.Sprintf("#%d · %s", items[i].ID, items[i].At.Format("15:04:05")) }</span>
+					</li>
+				}
+			</ul>
+		}
+	</div>
+}

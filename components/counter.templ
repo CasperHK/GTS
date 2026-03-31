@@ -1,0 +1,28 @@
+package components
+
+import "fmt"
+
+// Counter renders the shared counter fragment.
+// This component is both used in the initial page render and as a standalone
+// fragment broadcast via SSE when the counter value changes.
+templ Counter(count int) {
+	<div id="counter" class="card">
+		<h2 class="card-title">Shared Counter</h2>
+		<p class="counter-value">{ fmt.Sprintf("%d", count) }</p>
+		<div class="btn-group">
+			<button
+				class="btn btn-primary"
+				data-on:click="@post('/counter/decrement')"
+			>−</button>
+			<button
+				class="btn btn-secondary"
+				data-on:click="@post('/counter/reset')"
+			>Reset</button>
+			<button
+				class="btn btn-primary"
+				data-on:click="@post('/counter/increment')"
+			>+</button>
+		</div>
+		<p class="hint">All connected clients see the same value in real time.</p>
+	</div>
+}

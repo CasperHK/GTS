@@ -1,0 +1,20 @@
+package components
+
+import "fmt"
+
+// Presence renders the connected-clients indicator.
+// It is broadcast via SSE whenever a client connects or disconnects.
+templ Presence(count int) {
+	<div id="presence" class="presence">
+		<span class="presence-dot"></span>
+		<span>{ fmt.Sprintf("%d", count) } { plural(count, "client", "clients") } connected</span>
+	</div>
+}
+
+// plural returns singular when n==1, otherwise plural.
+func plural(n int, singular, pluralForm string) string {
+	if n == 1 {
+		return singular
+	}
+	return pluralForm
+}

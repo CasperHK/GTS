@@ -1,0 +1,27 @@
+# Binaries
+/gts-server
+/cmd/gts-server
+
+# Go build artifacts
+*.exe
+*.test
+*.out
+
+# Go dependency cache (not committed; restored by go mod download)
+# go.sum IS committed
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Tailwind node modules (if using Tailwind CLI)
+node_modules/
+
+# Compiled Tailwind output is committed as static/styles.css
+# so it works without a Node.js environment.

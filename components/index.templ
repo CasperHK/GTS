@@ -1,0 +1,40 @@
+package components
+
+import "github.com/CasperHK/GTS/internal/state"
+
+// IndexPage renders the full HTML document for the root route.
+// It embeds the initial Counter, Feed, and Presence fragments so clients see
+// the current state on first load before any SSE events arrive.
+templ IndexPage(counter int, feed []state.FeedItem, clients int) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>GTS — Go · Templ · Datastar</title>
+			<link rel="stylesheet" href="/static/styles.css"/>
+			<script type="module" src="/static/datastar.js"></script>
+		</head>
+		<body>
+			<header class="site-header">
+				<h1>GTS</h1>
+				<p class="tagline">Go · Templ · Datastar — HTML-first reactive UI over SSE</p>
+			</header>
+			<main class="layout">
+				<!-- Presence indicator: updated via SSE when clients connect/disconnect -->
+				@Presence(clients)
+				<!-- Counter: updated via SSE when any client clicks +/− -->
+				@Counter(counter)
+				<!-- Feed: updated via SSE when any client sends a message -->
+				@Feed(feed)
+			</main>
+			<!-- Bootstrap Datastar signals and open the persistent SSE connection.
+			     data-signals initialises the reactive `message` signal used by the feed input.
+			     data-init fires immediately when this element is processed, opening /sse. -->
+			<div
+				data-signals={ `{"message":""}` }
+				data-init="@get('/sse')"
+			></div>
+		</body>
+	</html>
+}
